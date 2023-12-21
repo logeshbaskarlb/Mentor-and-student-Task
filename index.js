@@ -25,9 +25,15 @@ app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
   res.send(`
-    <h2 style=" text-align:center">Mentor and Student Assigning with Database</h2>
+  <div style="background-color:black; color:white;height:100%;">
+    <h2 style=" text-align:center">
+    Mentor and Student Assigning with Database
+    </h2>
+    <h4  style=" text-align:center">Here youu can see the assigned mentor ,students and mentor list ,student list
+    </h4> 
+    <h2  style=" text-align:center">By clicking the link given below</h2>
     <div style="display:flex; justify-content:center;padding:20px;"> 
-    <div style=" background-color:blue; padding:20px;"> 
+    <div style=" padding:20px;"> 
     <p style="color:white;background-color:white; padding:10px 40px; margin:10px 20px; text-align:center ">
       <a href="/mentors" style="text-decoration:none;color:black;">
       All Mentors list
@@ -41,8 +47,18 @@ app.get("/", (req, res) => {
     <p style="color:white;background-color:white; padding:10px 5px; margin:10px 20px; text-align:center ">
     <a href="/students-without-mentors"  style="text-decoration:none;color:black;">
     Students Without Mentors
+    </p>
+    <p style="color:white;background-color:white; padding:10px 5px; margin:10px 20px; text-align:center ">
+    <a href="/students-without-mentors"  style="text-decoration:none;color:black;">
+    Student without mentor
     </a>
     </p>
+    <p style="color:white;background-color:white; padding:10px 5px; margin:10px 20px; text-align:center ">
+    <a href="/change-mentor"  style="text-decoration:none;color:black;">
+    Changing mentor
+    </a>
+    </p>
+    </div>
     </div>
     </div>
     `);
@@ -129,7 +145,7 @@ app.post("/student", async (req, res) => {
 
 //3) Write API to Assign a student to Mentor
 //a) Select one mentor and Add multiple Student
-app.post("/studentToMentor", async (req, res) => {
+app.post("/student-to-mentor", async (req, res) => {
   try {
     const { mentorId, studentId } = req.body;
     const mentorObjectId = new ObjectId(mentorId);
@@ -239,7 +255,7 @@ app.post("/change-mentor", async (req, res) => {
       { _id: studentObjectId },
       {
         $set: {
-          oldMentor: student.currentMentor, // Update this line
+          oldMentor: student.newCurrentMentor,
           currentMentor: newCurrentMentor,
         },
       }
