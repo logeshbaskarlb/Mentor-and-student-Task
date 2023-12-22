@@ -12,8 +12,9 @@ const express = require("express");
 const { MongoClient, ObjectId } = require("mongodb");
 const app = express();
 const cors = require("cors");
-const dotenv = require("dotenv").config();
-const URL = process.env.DB;
+require('dotenv').config();
+const URL =process.env.HELLO ;
+console.log(process.env.HELLO)
 
 app.use(
   cors({
@@ -70,6 +71,12 @@ app.get("/mentors", async (req, res) => {
     const connection = await MongoClient.connect(URL);
     const db = connection.db("mentorship");
     const mentors = await db.collection("mentors").find({}).toArray();
+    MongoClient.connect((error, client) => {
+      if(error){
+          return console.log('Unable to connect to database')
+      }
+      console.log(`Connected correctly`)
+  });
     await connection.close();
     res.send(mentors);
   } catch (error) {
@@ -91,6 +98,12 @@ app.post("/mentor", async (req, res) => {
       mentorEmail: mentorEmail,
       students: [],
     });
+    MongoClient.connect((error, client) => {
+      if(error){
+          return console.log('Unable to connect to database')
+      }
+      console.log(`Connected correctly`)
+  });
     await connection.close();
     res.send({
       message: "Mentor created",
